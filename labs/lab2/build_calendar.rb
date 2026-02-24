@@ -18,7 +18,6 @@ end
 teams = []
 File.foreach(teams_file, encoding: "UTF-8") do |line|
   line = line.strip
-  puts line
   if line.include?('—')
     parts = line.split('—')
     teams << {name: parts[0].strip, city: parts[1].strip}
@@ -51,21 +50,21 @@ times = ["12:00", "15:00", "18:00"]
 slots = []
 days_availible.each do |d|
   times.each do |t|
-    slots << {day: d, time: t, game_count: 0}
+    slots << {date: d, time: t, game_count: 0}
   end
 end
 
 games = []
 pairs.each do |team1, team2|
   best_slot = slots.min_by{ |s| s[:game_count] }
-  if best_slot[:game_count]
+  if best_slot[:game_count] < 2
     games << {
       date: best_slot[:date],
       time: best_slot[:time],
       team1: team1,
       team2: team2
     }
-    best_slot[:game_count] = 1;
+    best_slot[:game_count] += 1;
   else
     put "no space for games availible."
     break
@@ -81,9 +80,9 @@ File.open(calendar_file, "w") do |file|
 
   current_day = nil
   games.each do |game|
-    if game[:date] != current_day
+    if current_day != game[:date]
       current_day = game[:date]
-      file.puts "\n#{game[:date].day}.#{game[:date].month}.#{game[:date].year}"
+      file.puts "\n#{game[:date]}"
     end
     file.puts "#{game[:time]}: #{game[:team1][:name]} vs #{game[:team2][:name]}"
   end
