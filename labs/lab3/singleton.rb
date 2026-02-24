@@ -13,11 +13,19 @@ class Logger
   # TODO: Make the constructor private using private_class_method
   # TODO: Create a class variable @@instance
   # TODO: Implement self.instance method that returns the single instance
-  
-  def initialize
+  @@instance = nil
+
+  private_class_method def initialize
     @logs = []
   end
   
+  def self.instance
+    if @@instance == nil?
+      @@instance = new
+    end
+    @@instance
+  end
+
   def log(message)
     @logs << "[#{Time.now}] #{message}"
   end
