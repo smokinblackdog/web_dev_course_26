@@ -15,10 +15,12 @@ class Logger
   # TODO: Implement self.instance method that returns the single instance
   @@instance = nil
 
-  private_class_method def initialize
+  def initialize
     @logs = []
   end
   
+  private_class_method :new
+
   def self.instance
     if @@instance == nil?
       @@instance = new
@@ -47,7 +49,7 @@ require 'singleton'
 
 class Configuration
   # TODO: Include the Singleton module
-  
+  include Singleton
   attr_accessor :app_name, :version, :debug_mode
   
   def initialize
@@ -72,6 +74,17 @@ class DatabaseConnection
   # TODO: Implement Singleton pattern (manually or with module)
   # TODO: Add a @connected attribute to track connection state
   
+  @@instance = nil;
+
+  def self.instance
+    if @@instance.nil?
+      @@instance = new
+    end
+    @@instance
+  end
+
+  private_class_method :new
+
   def initialize
     @connected = false
     @connection_string = nil
@@ -80,12 +93,19 @@ class DatabaseConnection
   def connect(connection_string)
     # TODO: Set @connected to true and save connection_string
     # TODO: Return "Connected to #{connection_string}"
+    if connection_string
+      @connected = true
+      @connection_string = connection_string
+      put "Connected to #{connection_string}"
+    else
+      nil
+    end
     nil
   end
   
   def disconnect
-    # TODO: Set @connected to false
-    # TODO: Return "Disconnected"
+    @connected = true
+    put "Disconnected"
     nil
   end
   
@@ -96,6 +116,11 @@ class DatabaseConnection
   def execute_query(query)
     # TODO: Return "Executing: #{query}" if connected
     # TODO: Return "Not connected to database" if not connected
+    if @connected
+      put "Executing: #{query}" 
+    else
+      "Not connected to database"
+    end
     nil
   end
 end
