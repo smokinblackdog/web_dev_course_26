@@ -22,9 +22,7 @@ class Logger
   private_class_method :new
 
   def self.instance
-    if @@instance == nil?
-      @@instance = new
-    end
+    @@instance ||= new
     @@instance
   end
 
@@ -77,9 +75,7 @@ class DatabaseConnection
   @@instance = nil;
 
   def self.instance
-    if @@instance.nil?
-      @@instance = new
-    end
+    @@instance ||= new
     @@instance
   end
 
@@ -96,7 +92,7 @@ class DatabaseConnection
     if connection_string
       @connected = true
       @connection_string = connection_string
-      put "Connected to #{connection_string}"
+      return "Connected to #{connection_string}"
     else
       nil
     end
@@ -104,9 +100,8 @@ class DatabaseConnection
   end
   
   def disconnect
-    @connected = true
-    put "Disconnected"
-    nil
+    @connected = false
+    return "Disconnected"
   end
   
   def connected?
@@ -117,9 +112,9 @@ class DatabaseConnection
     # TODO: Return "Executing: #{query}" if connected
     # TODO: Return "Not connected to database" if not connected
     if @connected
-      put "Executing: #{query}" 
+      return "Executing: #{query}" 
     else
-      "Not connected to database"
+      return "Not connected to database"
     end
     nil
   end
