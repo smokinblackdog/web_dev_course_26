@@ -23,7 +23,6 @@ class Logger
 
   def self.instance
     @@instance ||= new
-    @@instance
   end
 
   def log(message)

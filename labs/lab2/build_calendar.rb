@@ -25,6 +25,8 @@ File.foreach(teams_file, encoding: "UTF-8") do |line|
 end
 puts "found #{teams.size} commands"
 
+teams = teams.shuffle
+
 # разбиваем команды на пары дабы найти количество необходимых нам игр
 pairs = []
 teams.each_with_index do |team1, i|
@@ -35,6 +37,8 @@ teams.each_with_index do |team1, i|
   end
 end
 puts "need #{pairs.size} games"
+
+pairs = pairs.shuffle
 
 # ищем доступные дни и время
 days_availible = []
