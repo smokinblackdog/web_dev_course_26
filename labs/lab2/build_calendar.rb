@@ -3,11 +3,13 @@ start_date = ARGV[1]
 end_date = ARGV[2]
 calendar_file = ARGV[3]
 
+teams_file, start_date, end_date, calendar_file = ARGV 
+
 require 'date'
 
 # парсим даты
-start_date = Date.parse(start_date);
-end_date = Date.parse(end_date);
+start_date = Date.parse(start_date)
+end_date = Date.parse(end_date)
 
 if !File.exist?(teams_file)
   puts "file not found" 
@@ -25,7 +27,7 @@ File.foreach(teams_file, encoding: "UTF-8") do |line|
 end
 puts "found #{teams.size} commands"
 
-teams = teams.shuffle
+teams.shuffle!
 
 # разбиваем команды на пары дабы найти количество необходимых нам игр
 pairs = []
